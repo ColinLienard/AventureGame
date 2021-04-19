@@ -1,0 +1,47 @@
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    
+    <button id="enterFullScreen">Mode plein écran</button>
+    <div id="game-container">
+        <canvas id="game"></canvas>
+    </div>
+    <canvas id="offScreen"></canvas>
+
+    <script type="module">
+
+        import { init } from "./js/controller.js";
+
+        const offScreen = document.getElementById("offScreen");
+        const offScreenCtx = offScreen.getContext("2d");
+        offScreen.width = 256;
+        offScreen.height = 144;
+        const allImages = [
+            "player.png",
+            "spider.png",
+            "UI.png",
+            "world.png",
+            "loot.png"
+        ];
+        allImages.forEach(image => {
+            let sprite = new Image();
+            sprite.src = "data/" + image;
+            offScreenCtx.drawImage(sprite, 0, 0);
+        });
+
+        document.getElementById("enterFullScreen").addEventListener("click", () => {
+            document.getElementById("game-container").requestFullscreen();
+        });
+
+        init(256, 144, 3);
+
+    </script>
+
+</body>
+</html>

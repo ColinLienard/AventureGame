@@ -1,0 +1,32 @@
+@font-face {
+    font-family: "Pixel";
+    src: url("../data/font/VPPixel-Simplified.otf") format("opentype");
+}
+
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#game-container {
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+#game {
+    background-color: #1b1b1b;
+    image-rendering: pixelated;
+    cursor: url("../data/cursor.png"), default;
+    /* cursor: url("../data/crosshair.png") 12 12, default; */
+}
+
+#game.mousedown {
+    cursor: url('../data/cursorClicked.png'), default;
+}
+
+#offScreen {
+    display: none;
+}
