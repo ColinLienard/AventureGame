@@ -30,6 +30,7 @@ const init = (width, height, ratioValue) => {
 const handlerEvents = () => {
     window.addEventListener("keydown", bindKey);
     window.addEventListener("keyup", bindKey);
+
     renderer.canvas.addEventListener("mousedown", (event) => {
         handlerClick(event);
         renderer.canvas.classList.add("mousedown");
@@ -37,9 +38,10 @@ const handlerEvents = () => {
     renderer.canvas.addEventListener("mouseup", () => {
         renderer.canvas.classList.remove("mousedown");
     });
+
     renderer.canvas.addEventListener('contextmenu', handlerClick, false);
-          
-    window.addEventListener("fullscreenchange", renderer.resizeGame);
+
+    document.addEventListener("fullscreenchange", renderer.resizeGame, false);
 }
 
 const loop = () => {
@@ -56,9 +58,9 @@ const loop = () => {
     lootsMovements();
 
     renderer.clearCanvas();
+    renderer.followPlayer(Camera.getOffsetX(), Camera.getOffsetY());
     renderer.renderTerrain(World.terrains);
     renderer.renderWorld(tools.ySort());
-    renderer.followPlayer(Camera.getOffsetX(), Camera.getOffsetY());
     renderer.renderUI(World.UI, Player);
 
     performTransition();
@@ -120,7 +122,7 @@ const handlerClick = (event) => {
         let mouseX = Math.floor(event.layerX / ratio - Camera.getOffsetX());
         let mouseY = Math.floor(event.layerY / ratio - Camera.getOffsetY());
         // clickInteraction(mouseX, mouseY, () => { Player.attack(mouseX, mouseY) });
-        Player.attack(mouseX, mouseY);
+        Player.performAttack(mouseX, mouseY);
     }
     else if(event.button == 2 && Player.canMove) {
         event.preventDefault();
@@ -205,12 +207,12 @@ const PlayerMovements = (keys) => {
             else if(Player.y > World.getDimension().height - Player.height)
                 Player.y = World.getDimension().height - Player.height;
 
-            World.interactions.forEach(interaction => {
-                tools.basicCollision(Player, interaction);
-            });
-
             World.colliders.forEach(collider => {
                 tools.getCollision(Player, collider);
+            });
+
+            World.interactions.forEach(interaction => {
+                tools.basicCollision(Player, interaction);
             });
         }
     }

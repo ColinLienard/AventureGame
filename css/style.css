@@ -4,8 +4,12 @@
 }
 
 body {
+    width: 100%;
+    height: 100%;
     margin: 0;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
     align-items: center;
 }
@@ -13,11 +17,11 @@ body {
 #game-container {
     display: flex;
     justify-content: center;
-    position: relative;
+    margin: auto auto 0 auto;
 }
 
 #game {
-    background-color: #1b1b1b;
+    box-sizing: border-box;
     image-rendering: pixelated;
     cursor: url("../data/cursor.png"), default;
     /* cursor: url("../data/crosshair.png") 12 12, default; */
@@ -25,6 +29,10 @@ body {
 
 #game.mousedown {
     cursor: url('../data/cursorClicked.png'), default;
+}
+
+#enterFullScreen {
+    margin: 1rem auto auto auto;
 }
 
 #offScreen {

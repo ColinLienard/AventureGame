@@ -1,50 +1,47 @@
 import Player from "./Player.js";
 import World from "./world/World.js";
+import * as UI from "./world/UI.js";
 import * as Loot from "./Loot.js";
 import * as tools from "./tools.js";
 
-class Spider {
+class Ennemy {
     sprite = null;
-    spriteSource = "data/spider.png";
-    width = 33;
-    height = 24;
-    organism = true;
 
     DOWN = 0;
     UP = 1;
     LEFT = 2;
     RIGHT = 3;
+    direction = null;
 
     frame = 0;
     frameRate = 10;
     frameNumber = 3;
     frameWaiter = 0;
-    direction = null;
+    loopWaiter = 0;
 
-    speed = .3;
-    aggroSpeed = .7;
-    hit = false;
-
-    health = 14;
-    maxHealth = 14;
-    loot = Loot.cobweb;
-
-    move = false;
     state = "chase";
+    organism = true;
+    hit = false;
+    move = false;
+    collide = false;
     targetPosition = {
         x: 0,
         y: 0
     }
-    loopWaiter = 0;
-    collide = null;
     knockback = 0;
 
-    constructor(x, y) {
+    constructor(x, y, tileSize) {
         this.sprite = new Image();
+        this.x = x * tileSize;
+        this.y = y * tileSize;
+    }
+
+    init() {
         this.sprite.src = this.spriteSource;
 
-        this.x = x;
-        this.y = y;
+        World.ennemies.push(this);
+        World.allSprites.push(this);
+        new UI.HealthBar(this, true);
     }
 
     getPosition() {
@@ -65,8 +62,8 @@ class Spider {
 
     updateState(playerPosition) {
         if(this.canMove && this.state != "dead") {
-            if(tools.getDistanceFromPlayer(this.getPosition()) < 70) {
-                if(tools.getDistanceFromPlayer(this.getPosition()) < 10) {
+            if(tools.getDistanceFromPlayer(this.getPosition()) < this.detectPlayerRange) {
+                if(tools.getDistanceFromPlayer(this.getPosition()) < this.damagePlayerRange) {
                         Player.hit = true;
                         this.canMove = this.move = false;
                         this.loopWaiter = 0;
@@ -104,7 +101,7 @@ class Spider {
             this.frameWaiter--;
         }
 
-        if(this.state == "dead" && this.frame > 5) { // Supprime l'instance
+        if(this.state == "dead" && this.frame > this.dyingFrameNumber - 1) { // Supprime l'instance
             World.ennemies.splice(World.ennemies.indexOf(this), 1);
             World.allSprites.splice(World.allSprites.indexOf(this), 1);
 
@@ -112,18 +109,18 @@ class Spider {
         }
     }
 
-    findTargetPosition() {
-        this.targetPosition.x = Math.floor(Math.random() * 400 - 200) + this.x;
-        this.targetPosition.y = Math.floor(Math.random() * 400 - 200) + this.y;
+    findTargetPosition() { // random * (max - min) + min
+        this.targetPosition.x = Math.floor(Math.random() * 1200 - 600) + this.x;
+        this.targetPosition.y = Math.floor(Math.random() * 1200 - 600) + this.y;
         if(this.targetPosition.x < 0 || this.targetPosition.x > World.getDimension().width || this.targetPosition.y < 0 || this.targetPosition.y > World.getDimension().height)
             this.findTargetPosition();
     }
 
     wander() {
-        if((this.getPosition().x == this.targetPosition.x && this.getPosition().y == this.targetPosition.y) || this.state == "chase" || this.loopWaiter > Math.floor(Math.random() * 600 + 200)) {
+        if((this.getPosition().x == this.targetPosition.x && this.getPosition().y == this.targetPosition.y) || this.colliding == true || this.state == "chase" || this.loopWaiter > Math.floor(Math.random() * 600 + 200)) {
             this.findTargetPosition();
             this.loopWaiter = 0;
-            this.collide = false;
+            this.colliding = false;
         }
         else if(this.loopWaiter < 120)
             tools.moveTo(this, this.targetPosition, this.speed, true);
@@ -179,12 +176,25 @@ class Spider {
     die() {
         this.state = "dead";
         this.direction = 4;
-        this.frameNumber = 7;
+        this.frameNumber = this.dyingFrameNumber + 1;
             
-        const loot = new Loot.Loot(this.getPosition(), this.loot);
-        World.loots.push(loot);
-        World.allSprites.push(loot);
+        new Loot.Loot(this.getPosition(), this.loot);
     }
+}
+
+class Spider extends Ennemy {
+    spriteSource = "data/spider.png";
+    width = 33;
+    height = 24;
+
+    speed = .3;
+    aggroSpeed = .7;
+    health = 14;
+    maxHealth = 14;
+    dyingFrameNumber = 9;
+    detectPlayerRange = 70;
+    damagePlayerRange = 10;
+    loot = Loot.cobweb;
 }
 
 export { Spider };

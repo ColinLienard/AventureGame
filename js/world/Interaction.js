@@ -1,31 +1,31 @@
+import World from "./World.js";
+import * as UI from "./UI.js";
+
 class Interaction {
     visible = false;
 
-    constructor(tileSize, x, y, type, map, playerX, playerY, popup) {
-        this.width = type.width;
-        this.height = type.height;
-        this.x = x * tileSize;
-        this.y = y * tileSize;
-        this.map = map;
-        this.playerX = playerX;
-        this.playerY = playerY;
-        this.popup = popup;
+    constructor(x, y, tileSize, values) {
+        this.x = x * tileSize + tileSize / 4;
+        this.y = y * tileSize + tileSize / 4;
+        this.width = this.height = tileSize / 2;
+        this.map = values.map;
+        this.playerX = values.playerX;
+        this.playerY = values.playerY;
+        
+        this.prompt = new UI.Prompt(values.text, false);
+
+        World.interactions.push(this);
     }
 
     show() {
         this.visible = true;
-        this.popup.visible = true;
+        this.prompt.visible = true;
     }
 
     hide() {
         this.visible = false;
-        this.popup.visible = false;
+        this.prompt.visible = false;
     }
 }
 
-const traveler = {
-    width: 64,
-    height: 64
-}
-
-export { Interaction, traveler };
+export { Interaction };

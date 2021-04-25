@@ -7,18 +7,17 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    
-    <button id="enterFullScreen">Mode plein écran</button>
     <div id="game-container">
         <canvas id="game"></canvas>
     </div>
+    <button id="enterFullScreen">Mode plein écran</button>
     <canvas id="offScreen"></canvas>
 
     <script type="module">
 
         import { init } from "./js/controller.js";
 
-        const offScreen = document.getElementById("offScreen");
+        const offScreen = document.querySelector("#offScreen");
         const offScreenCtx = offScreen.getContext("2d");
         offScreen.width = 256;
         offScreen.height = 144;
@@ -35,11 +34,11 @@
             offScreenCtx.drawImage(sprite, 0, 0);
         });
 
-        document.getElementById("enterFullScreen").addEventListener("click", () => {
-            document.getElementById("game-container").requestFullscreen();
+        document.querySelector("#enterFullScreen").addEventListener("click", () => {
+            document.querySelector("#game-container").requestFullscreen();
         });
 
-        init(256, 144, 3);
+        init(288, 162, 3); // 256, 144
 
     </script>
 

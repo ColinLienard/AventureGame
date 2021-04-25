@@ -13,42 +13,35 @@ const testMap = {
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 4, 4, 4, 1, 1, 1,
+        1, 1, 1, 1, 1, 4, 4, 5, 4, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1
     ], [
         // Environments
         "B", "R", "A", "O", "O", "O", "O", "O", "O", "O",
-        "S", "E", "P", "E", "O", "O", "O", "O", "O", "O",
+        "S", "E", "O", "E", "O", "O", "O", "O", "O", "O",
         "E", "A", "R", "A", "O", "O", "O", "O", "O", "O",
         "R", "B", "A", "A", "O", "O", "O", "O", "O", "O",
         "O", "O", "O", "O", "O", "O", "O", "O", "O", "O"
     ], [
         // Interactions
         "O", "O", "O", "O", "O", "O", "O", "O", "O", "O",
-        "X", "O", "O", "O", "O", "O", "O", "O", "O", "O",
+        "@1", "O", "O", "O", "O", "O", "O", "O", "O", "O",
         "O", "O", "O", "O", "O", "O", "O", "O", "O", "O",
-        "O", "O", "O", "O", "O", "O", "O", "O", "O", "O",
+        "O", "O", "O", "O", "O", "O", "O", "@2", "O", "O",
         "O", "O", "O", "O", "O", "O", "O", "O", "O", "O",
     ]],
 
-    GRASS: 1,
-    HORIZONTAL_PATH: 2,
-    WALL: 4,
-
-    EMPTY: "O",
-    PLAYER: "P",
-    TREE: "A",
-    BUSH: "B",
-    ROCK: "R",
-    SIGN_LEFT: "S",
-    SPIDER: "E",
-
-    TRAVELER: {
-        icon: "X",
+    "@1": {
         map: mapsFinder.otherMap,
         text: "Voyager jusqu'au/tutoriel ?",
         playerX: 3,
         playerY: 1
+    },
+    "@2": {
+        map: mapsFinder.otherMap,
+        text: "Voyager jusqu'au/test ?",
+        playerX: 2,
+        playerY: 2
     }
 }
 
@@ -65,29 +58,18 @@ const otherMap = {
     ], [
         // Environments
         "A", "B", "O", "B",
-        "O", "P", "A", "S",
+        "O", "O", "A", "S",
         "B", "A", "R", "A"
     ], [
         // Interactions
         "O", "O", "O", "O",
-        "O", "O", "O", "X",
+        "O", "O", "O", "@1",
         "O", "O", "O", "O"
     ]],
 
-    GRASS: 1,
-    HORIZONTAL_PATH: 2,
-
-    EMPTY: "O",
-    PLAYER: "P",
-    TREE: "A",
-    BUSH: "B",
-    ROCK: "R",
-    SIGN_RIGHT: "S",
-
-    TRAVELER: {
-        icon: "X",
+    "@1": {
         map: mapsFinder.testMap,
-        text: "Voyager jusqu'à/la map de test ?",
+        text: "Voyager jusqu'au/tutoriel ?",
         playerX: 0,
         playerY: 1
     }
@@ -95,4 +77,4 @@ const otherMap = {
 
 const allMaps = [testMap, otherMap];
 
-export { mapsFinder, testMap, otherMap, allMaps };
+export { testMap, otherMap, allMaps };

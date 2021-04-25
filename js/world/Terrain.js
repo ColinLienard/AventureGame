@@ -1,21 +1,21 @@
+import World from "./World.js";
+
 class Terrain {
     spriteSource = "data/world.png";
 
-    constructor(tileSize, x, y, type) {
+    constructor(x, y, tileSize) {
         this.sprite = new Image();
         this.sprite.src = this.spriteSource;
-        this.width = this.height = tileSize;
-        this.sX = type.sX;
-        this.sY = type.sY;
         this.x = x * tileSize;
         this.y = y * tileSize;
+        this.width = this.height = tileSize;
+    }
 
-        if(type.hitBoxX != undefined) {
-            this.hitBoxX = type.hitBoxX;
-            this.hitBoxY = type.hitBoxY;
-            this.hitBoxWidth = type.hitBoxWidth;
-            this.hitBoxHeight = type.hitBoxHeight;
-        }
+    init() {
+        World.terrains.push(this);
+
+        if(this.hitBoxX != undefined)
+            World.colliders.push(this);
     }
 
     getHitBox() {
@@ -28,29 +28,44 @@ class Terrain {
     }
 }
 
-const grass = {
-    sX: 0,
-    sY: 0
+class Grass extends Terrain {
+    sX = 0;
+    sY = 0;
 }
 
-const horizontalGrassPath = {
-    sX: 64,
-    sY: 0
+class HorizontalGrassPath extends Terrain {
+    sX = 64;
+    sY = 0;
 }
 
-const verticalGrassPath = {
-    sX: 128,
-    sY: 0
+class Cliff extends Terrain {
+    sX = 256;
+    sY = 0;
+
+    hitBoxX = 0;
+    hitBoxY = 10;
+    hitBoxWidth = 64;
+    hitBoxHeight = 40;
 }
 
-const wall = {
-    sX: 192,
-    sY: 0,
+class CliffCaveEntry extends Terrain {
+    sX = 320;
+    sY = 0;
+
+    hitBoxX = 0;
+    hitBoxY = 10;
+    hitBoxWidth = 64;
+    hitBoxHeight = 40;
+}
+
+const cave_topWall = {
+    sX: 256,
+    sY: 64,
 
     hitBoxX: 0,
-    hitBoxY: 10,
+    hitBoxY: 0,
     hitBoxWidth: 64,
-    hitBoxHeight: 40,
+    hitBoxHeight: 54,
 }
 
-export { Terrain, grass, horizontalGrassPath, verticalGrassPath, wall };
+export { Grass, HorizontalGrassPath, Cliff, CliffCaveEntry };

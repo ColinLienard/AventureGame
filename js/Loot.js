@@ -10,7 +10,7 @@ class Loot {
     loopWaiter = 0;
 
     slidingSpeed = .4;
-    pickingSpeed = 1.2;
+    pickingSpeed = 1.3;
     rangeToPickUp = 16;
     targetPosition = {
         x: 0,
@@ -28,6 +28,9 @@ class Loot {
 
         this.findTargetPosition();
         this.state = "sliding";
+
+        World.loots.push(this);
+        World.allSprites.push(this);
     }
 
     getPosition() {

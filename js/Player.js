@@ -34,7 +34,6 @@ export default {
     spriteSource: "data/player.png",
     width: 24,
     height: 32,
-    organism: true,
 
     DOWN: 0,
     UP: 1,
@@ -47,9 +46,6 @@ export default {
     frameWaiter: 0,
     direction: 0,
 
-    x: null,
-    y: null,
-
     speed: 0,
     acceleration: .1,
     maxSpeed: 1.3,
@@ -57,6 +53,7 @@ export default {
     force: 1.5,
     damage: 4,
     
+    organism: true,
     move: false,
     canMove: true,
     attacking: false,
@@ -113,7 +110,7 @@ export default {
         this.y = y * tileSize + tileSize / 2 - this.height / 2;
     },
 
-    attack: function(mouseX, mouseY) {
+    performAttack: function(mouseX, mouseY) {
         // mouseX = Math.floor(this.getPosition().x - mouseX);
         // mouseY = Math.floor(this.getPosition().y - mouseY);
     

@@ -1,31 +1,30 @@
+import World from "./World.js";
+
 class UI {
     spriteSource = "data/UI.png";
 
-    constructor(type, typeName, value, visible) {
+    constructor(value, visible) {
         this.sprite = new Image();
         this.sprite.src = this.spriteSource;
-        this.typeName = typeName;
-        this.width = type.width;
-        this.height = type.height;
-        this.sX = type.sX;
-        this.sY = type.sY;
         this.value = value;
         this.visible = visible;
+
+        World.UI.push(this);
     }
 }
 
-const popup = {
-    width: 64,
-    height: 20,
-    sX: 0,
-    sY: 0
+class Prompt extends UI {
+    width = 58;
+    height = 20;
+    sX = 0;
+    sY = 0
 }
 
-const healthBar = {
-    width: 20,
-    height: 2,
-    sX: 64,
-    sY: 0
+class HealthBar extends UI {
+    width = 20;
+    height = 2;
+    sX = 58;
+    sY = 0
 }
 
-export { UI, popup, healthBar };
+export { Prompt, HealthBar };

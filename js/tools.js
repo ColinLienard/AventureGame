@@ -26,43 +26,49 @@ class Waiter {
 }
 
 const basicCollision = (organism, collider) => {
-    if(organism.getHitBox().x + organism.getHitBox().width > collider.x && organism.getHitBox().x < collider.x + World.tileSize && organism.getHitBox().y + organism.getHitBox().height > collider.y && organism.getHitBox().y < collider.y + World.tileSize)
-        collider.show();
-    else
-        collider.hide();
+    if(getDistance(organism.x, organism.y, collider.x, collider.y) < 100) {
+        let organismHitBox = organism.getHitBox();
+        if(organism.x + organism.width > collider.x && organism.x < collider.x + collider.width && organism.y + organism.height > collider.y && organism.y < collider.y + collider.height)
+            collider.show();
+        else
+            collider.hide();
+    }
 }
 
 const getCollision = (organism, collider) => {
-    let vx, vy, dw, dh, overlapX, overlapY;
-    let organismHitBox = organism.getHitBox();
-    let colliderHitBox = collider.getHitBox();
-
-    // Calcul de la distance entre les deux rectangles
-    vx = (organismHitBox.x + organismHitBox.width / 2) - (colliderHitBox.x + colliderHitBox.width / 2);
-    vy = (organismHitBox.y + organismHitBox.height / 2) - (colliderHitBox.y + colliderHitBox.height / 2);
-
-    // Distance minimum avant la collision
-    dw = (organismHitBox.width) / 2 + (colliderHitBox.width) / 2;
-    dh = (organismHitBox.height) / 2 + (colliderHitBox.height) / 2;
-
-    if(Math.abs(vx) < dw) {
-        if(Math.abs(vy) < dh) {
-            if(organism.state == "wander") organism.state = "chase"; // Pour trouver une nouvelle targetPosition
-
-            overlapX = dw - Math.abs(vx);
-            overlapY = dh - Math.abs(vy);
-
-            if(overlapX >= overlapY) {
-                if(vy > 0)
-                    organism.y = organism.y + overlapY; // top
-                else
-                    organism.y = organism.y - overlapY; // bottom
-            }
-            else {
-                if(vx > 0)
-                    organism.x = organism.x + overlapX; // left
-                else
-                    organism.x = organism.x - overlapX; // right
+    if(getDistance(organism.x, organism.y, collider.x, collider.y) < 100) {
+        let vx, vy, dw, dh, overlapX, overlapY;
+        let organismHitBox = organism.getHitBox();
+        let colliderHitBox = collider.getHitBox();
+    
+        // Calcul de la distance entre les deux rectangles
+        vx = (organismHitBox.x + organismHitBox.width / 2) - (colliderHitBox.x + colliderHitBox.width / 2);
+        vy = (organismHitBox.y + organismHitBox.height / 2) - (colliderHitBox.y + colliderHitBox.height / 2);
+    
+        // Distance minimum avant la collision
+        dw = (organismHitBox.width) / 2 + (colliderHitBox.width) / 2;
+        dh = (organismHitBox.height) / 2 + (colliderHitBox.height) / 2;
+    
+        if(Math.abs(vx) < dw) {
+            if(Math.abs(vy) < dh) {
+                // if(organism.state == "wander") organism.state = "chase"; // Pour trouver une nouvelle targetPosition
+                if(organism.state == "wander") organism.colliding = true; // Pour trouver une nouvelle targetPosition
+    
+                overlapX = dw - Math.abs(vx);
+                overlapY = dh - Math.abs(vy);
+    
+                if(overlapX >= overlapY) {
+                    if(vy > 0)
+                        organism.y = organism.y + overlapY; // top
+                    else
+                        organism.y = organism.y - overlapY; // bottom
+                }
+                else {
+                    if(vx > 0)
+                        organism.x = organism.x + overlapX; // left
+                    else
+                        organism.x = organism.x - overlapX; // right
+                }
             }
         }
     }
