@@ -11,7 +11,7 @@ class Ennemy {
     UP = 1;
     LEFT = 2;
     RIGHT = 3;
-    direction = null;
+    direction = 0;
 
     frame = 0;
     frameRate = 10;
@@ -21,14 +21,16 @@ class Ennemy {
 
     state = "chase";
     organism = true;
+    isMoving = false;
+    canMove = true;
     hit = false;
-    move = false;
     collide = false;
     targetPosition = {
         x: 0,
         y: 0
     }
     knockback = 0;
+    timeToStop = null;
 
     constructor(x, y, tileSize) {
         this.sprite = new Image();
@@ -61,11 +63,11 @@ class Ennemy {
     }
 
     updateState(playerPosition) {
-        if(this.canMove && this.state != "dead") {
-            if(tools.getDistanceFromPlayer(this.getPosition()) < this.detectPlayerRange) {
-                if(tools.getDistanceFromPlayer(this.getPosition()) < this.damagePlayerRange) {
+        if(this.canMove) {
+            if(tools.getDistanceFromPlayer(this.getPosition()) <= this.detectPlayerRange) {
+                if(tools.getDistanceFromPlayer(this.getPosition()) <= this.damagePlayerRange) {
                         Player.hit = true;
-                        this.canMove = this.move = false;
+                        this.canMove = this.isMoving = false;
                         this.loopWaiter = 0;
                     }
                 else {
@@ -84,12 +86,12 @@ class Ennemy {
             this.loopWaiter ++;
         }
         else if(this.loopWaiter > 30) // Peut bouger après avoir touché le joueur
-            this.canMove = this.move = true;
+            this.canMove = this.isMoving = true;
         else
             this.loopWaiter ++;
 
         // Animate
-        if(this.move || this.state == "dead") {
+        if(this.isMoving || this.state == "dead") {
             if(this.frameWaiter == 0) {
                 if(this.frame < this.frameNumber - 1)
                     this.frame++;
@@ -109,23 +111,26 @@ class Ennemy {
         }
     }
 
-    findTargetPosition() { // random * (max - min) + min
-        this.targetPosition.x = Math.floor(Math.random() * 1200 - 600) + this.x;
-        this.targetPosition.y = Math.floor(Math.random() * 1200 - 600) + this.y;
+    findTargetPosition() {
+        this.targetPosition.x = Math.floor(Math.random() * 200 - 100 + this.x);
+        this.targetPosition.y = Math.floor(Math.random() * 200 - 100 + this.y);
+        
         if(this.targetPosition.x < 0 || this.targetPosition.x > World.getDimension().width || this.targetPosition.y < 0 || this.targetPosition.y > World.getDimension().height)
             this.findTargetPosition();
+        else
+            this.timeToStop = Math.floor(Math.random() * 250 + 50);
     }
 
     wander() {
-        if((this.getPosition().x == this.targetPosition.x && this.getPosition().y == this.targetPosition.y) || this.colliding == true || this.state == "chase" || this.loopWaiter > Math.floor(Math.random() * 600 + 200)) {
+        if(this.colliding || this.state == "chase" || this.loopWaiter >= this.timeToStop || tools.getDistance(this.getPosition().x, this.getPosition().y, this.targetPosition.x, this.targetPosition.y) < 5) { // (this.getPosition().x == this.targetPosition.x && this.getPosition().y == this.targetPosition.y)
             this.findTargetPosition();
             this.loopWaiter = 0;
             this.colliding = false;
         }
-        else if(this.loopWaiter < 120)
+        else if(this.loopWaiter < 150)
             tools.moveTo(this, this.targetPosition, this.speed, true);
         else {
-            this.move = false;
+            this.isMoving = false;
             this.frame = 0;
         }
     }
@@ -175,10 +180,14 @@ class Ennemy {
 
     die() {
         this.state = "dead";
+        this.canMove = false;
         this.direction = 4;
         this.frameNumber = this.dyingFrameNumber + 1;
-            
-        new Loot.Loot(this.getPosition(), this.loot);
+        
+        const dropRate = Math.floor(Math.random() * (this.loot.maxRate - this.loot.minRate + 1) + this.loot.minRate);
+        for(let i = 0 ; i < dropRate ; i ++) {
+            new this.loot.type(this.getPosition());
+        }
     }
 }
 
@@ -194,7 +203,16 @@ class Spider extends Ennemy {
     dyingFrameNumber = 9;
     detectPlayerRange = 70;
     damagePlayerRange = 10;
-    loot = Loot.cobweb;
+    loot = {
+        type: Loot.Cobweb,
+        minRate: 1,
+        maxRate: 3
+    };
+
+    constructor(x, y, tileSize) {
+        super(x, y, tileSize);
+        super.init();
+    }
 }
 
 export { Spider };

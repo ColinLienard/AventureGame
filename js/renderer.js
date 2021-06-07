@@ -18,7 +18,7 @@ const init = (width, height, ratioValue) => {
 
 const resizeGame = () => {
     if(document.fullscreenElement)
-        ratio = Math.round(window.innerHeight / canvasHeight);
+        ratio = Math.round(window.innerHeight / canvasHeight * 10) / 10;
     else
         ratio = 3;
     canvas.width = canvasWidth * ratio;

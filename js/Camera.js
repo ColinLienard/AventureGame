@@ -6,8 +6,6 @@ export default {
     canvasHeight: null,
     midScreenX: null,
     midScreenY: null,
-    moveX: false,
-    moveY: false,
 
     init: function(width, height) {
         this.canvasWidth = width;
@@ -17,27 +15,19 @@ export default {
     },
 
     getOffsetX: function() {
-        this.moveX = false;
-
         if(this.midScreenX - Player.x < - World.getDimension().width + this.canvasWidth && World.getDimension().width > this.canvasWidth)
             return - World.getDimension().width + this.canvasWidth;
-        else if(this.midScreenX - Player.x < 0 && World.getDimension().width > this.canvasWidth) {
-            this.moveX = Player.move;    
+        else if(this.midScreenX - Player.x < 0 && World.getDimension().width > this.canvasWidth)
             return this.midScreenX - Player.x;
-        }
         else
             return 0;
     },
 
-    getOffsetY: function() {
-        this.moveY = false;
-        
+    getOffsetY: function() {        
         if(this.midScreenY - Player.y < - World.getDimension().height + this.canvasHeight && World.getDimension().height > this.canvasHeight)
             return - World.getDimension().height + this.canvasHeight;
-        else if(this.midScreenY - Player.y < 0 && World.getDimension().height > this.canvasHeight) {    
-            this.moveY = Player.move;
+        else if(this.midScreenY - Player.y < 0 && World.getDimension().height > this.canvasHeight)
             return this.midScreenY - Player.y;
-        }
         else
             return 0;
     }

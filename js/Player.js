@@ -39,12 +39,12 @@ export default {
     UP: 1,
     LEFT: 2,
     RIGHT: 3,
+    direction: 0,
 
     frame: 0,
     frameRate: 10,
     frameNumber: 8,
     frameWaiter: 0,
-    direction: 0,
 
     speed: 0,
     acceleration: .1,
@@ -54,7 +54,7 @@ export default {
     damage: 4,
     
     organism: true,
-    move: false,
+    isMoving: false,
     canMove: true,
     attacking: false,
     hit: false,
@@ -68,7 +68,7 @@ export default {
     },
 
     loop: function() {
-        if(this.move || this.attacking) {
+        if(this.isMoving || this.attacking) {
 
             // End attack animation
             if(this.attacking && this.frame > 10) {
@@ -108,46 +108,10 @@ export default {
     changePosition: function(x, y, tileSize) {
         this.x = x * tileSize + tileSize / 2 - this.width / 2;
         this.y = y * tileSize + tileSize / 2 - this.height / 2;
+        this.direction = 0;
     },
 
     performAttack: function(mouseX, mouseY) {
-        // mouseX = Math.floor(this.getPosition().x - mouseX);
-        // mouseY = Math.floor(this.getPosition().y - mouseY);
-    
-        // if(mouseX > 0 && mouseY > 0) {
-        //     if(mouseX < mouseY)
-        //         this.direction = this.UP;
-        //     else
-        //         this.direction = this.LEFT;
-        // }
-        // else if(mouseX < 0 && mouseY > 0) {
-        //     if(mouseX * - 1 < mouseY)
-        //         this.direction = this.UP;
-        //     else
-        //         this.direction = this.RIGHT;
-        // }
-        // else if(mouseX < 0 && mouseY < 0) {
-        //     if(mouseX > mouseY)
-        //         this.direction = this.DOWN;
-        //     else
-        //         this.direction = this.RIGHT;
-        // }
-        // else if(mouseX > 0 && mouseY < 0) {
-        //     if(mouseX < mouseY * - 1)
-        //         this.direction = this.DOWN;
-        //     else
-        //         this.direction = this.LEFT;
-        // }
-
-        // if((mouseX > 0 && mouseY > 0 && mouseX < mouseY) || (mouseX < 0 && mouseY > 0 && mouseX * - 1 < mouseY))
-        //     this.direction = this.UP;
-        // else if((mouseX > 0 && mouseY > 0 && mouseX > mouseY) || (mouseX > 0 && mouseY < 0 && mouseX > mouseY * - 1))
-        //     this.direction = this.LEFT;
-        // else if((mouseX < 0 && mouseY > 0 && mouseX * - 1 > mouseY) || (mouseX < 0 && mouseY < 0 && mouseX < mouseY))
-        //     this.direction = this.RIGHT;
-        // else
-        //     this.direction = this.DOWN;
-
         let angle = Math.atan2(mouseY - this.getPosition().y, mouseX - this.getPosition().x) * 180 / Math.PI;
 
         if(angle > -45 && angle < 45)
@@ -167,7 +131,7 @@ export default {
 
         World.ennemies.forEach(ennemy => {
             if(tools.getDistanceFromPlayer(ennemy.getPosition()) < this.attackRange && (
-            (this.direction == this.UP && this.y > ennemy.y) ||
+            (this.direction == this.UP && this.y + this.height > ennemy.y + ennemy.height) ||
             (this.direction == this.RIGHT && this.x < ennemy.x) ||
             (this.direction == this.DOWN && this.y < ennemy.y) ||
             (this.direction == this.LEFT && this.x + this.width > ennemy.x + ennemy.width))) {

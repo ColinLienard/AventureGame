@@ -100,7 +100,7 @@ const moveTo = (organism, target, speed, changeDirection) => {
     organism.x += dx * speed;
     organism.y += dy * speed;
 
-    organism.move = true;
+    organism.isMoving = true;
     
     if(changeDirection) {
         let angle = Math.atan2(target.y - position.y, target.x - position.x) * 180 / Math.PI;

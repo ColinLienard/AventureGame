@@ -50,6 +50,11 @@ class OakTree extends Environment {
     hitBoxY = 52;
     hitBoxWidth = 10;
     hitBoxHeight = 10;
+
+    constructor(x, y, tileSize) {
+        super(x, y, tileSize);
+        super.init();
+    }
 }
 
 class Bush extends Environment {
@@ -64,6 +69,11 @@ class Bush extends Environment {
     hitBoxY = 10;
     hitBoxWidth = 14;
     hitBoxHeight = 8;
+
+    constructor(x, y, tileSize) {
+        super(x, y, tileSize);
+        super.init();
+    }
 }
 
 class Rock extends Environment {
@@ -78,6 +88,11 @@ class Rock extends Environment {
     hitBoxY = 8;
     hitBoxWidth = 18;
     hitBoxHeight = 14;
+
+    constructor(x, y, tileSize) {
+        super(x, y, tileSize);
+        super.init();
+    }
 }
 
 class SignLeft extends Environment {
@@ -92,6 +107,11 @@ class SignLeft extends Environment {
     hitBoxY = 14;
     hitBoxWidth = 5;
     hitBoxHeight = 4;
+
+    constructor(x, y, tileSize) {
+        super(x, y, tileSize);
+        super.init();
+    }
 }
 
 class SignRight extends Environment {
@@ -106,6 +126,11 @@ class SignRight extends Environment {
     hitBoxY = 14;
     hitBoxWidth = 5;
     hitBoxHeight = 4;
+
+    constructor(x, y, tileSize) {
+        super(x, y, tileSize);
+        super.init();
+    }
 }
 
 export { Environment, OakTree, Bush, Rock, SignLeft, SignRight };

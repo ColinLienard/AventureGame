@@ -192,10 +192,10 @@ const PlayerMovements = (keys) => {
         if(!keys.down && !keys.up && !keys.left && !keys.right) { // immobile
             Player.speed = 0;
             Player.frame = 0;
-            Player.move = false;
+            Player.isMoving = false;
         }
         else { // en mouvement
-            Player.move = true;
+            Player.isMoving = true;
 
             // Limites du monde
             if(Player.x < 0)
@@ -237,9 +237,9 @@ const ennemiesMovements = () => {
                 tools.getCollision(ennemy, collider);
             });
 
-            /*World.ennemies.forEach(ennemy2 => {
-                if(ennemy != ennemy2) getCollision(ennemy, ennemy2);
-            });*/
+            // World.ennemies.forEach(ennemy2 => {
+            //     if(ennemy != ennemy2) tools.getCollision(ennemy, ennemy2);
+            // });
         });
     }
 }
@@ -251,18 +251,5 @@ const lootsMovements = () => {
         });
     }
 }
-
-// const handlerCursor = (event) => {
-//     if(event) {
-//         model.cursor.x = event.layerX;
-//         model.cursor.y = event.layerY;
-//         model.cursor.X = model.cursor.x - model.camera.getOffsetX() * viewRatio;
-//         model.cursor.Y = model.cursor.y - model.camera.getOffsetY() * viewRatio;
-//     }
-//     else if(model.camera.moveX || model.camera.moveY) {
-//         model.cursor.X = model.cursor.x - model.camera.getOffsetX() * viewRatio;
-//         model.cursor.Y = model.cursor.y - model.camera.getOffsetY() * viewRatio;
-//     }
-// }
 
 export { init, changeRatio, startTransition };

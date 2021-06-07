@@ -9,22 +9,19 @@ class Loot {
     
     loopWaiter = 0;
 
-    slidingSpeed = .4;
-    pickingSpeed = 1.3;
-    rangeToPickUp = 16;
+    slidingSpeed = .5;
+    pickingSpeed = 1.4;
+    rangeToPickUp = 20;
     targetPosition = {
         x: 0,
         y: 0
     }
 
-    constructor(position, type) {
+    constructor(position) {
         this.sprite = new Image();
         this.sprite.src = this.spriteSource;
-
         this.x = position.x;
         this.y = position.y;
-        this.sX = type.sX;
-        this.sY = type.sY;
 
         this.findTargetPosition();
         this.state = "sliding";
@@ -48,7 +45,7 @@ class Loot {
                 break;
 
             case "sliding" :
-                if(this.loopWaiter >= 20) {
+                if(this.loopWaiter >= 24) {
                     this.state = "put";
                     this.loopWaiter = 0;
                 }
@@ -74,14 +71,14 @@ class Loot {
     }
 
     findTargetPosition() {
-        this.targetPosition.x = Math.floor(Math.random() * 50) + this.x;
-        this.targetPosition.y = Math.floor(Math.random() * 50) + this.y;
+        this.targetPosition.x = Math.floor(Math.random() * 100 - 50) + this.x;
+        this.targetPosition.y = Math.floor(Math.random() * 100 - 50) + this.y;
     }
 }
 
-const cobweb = {
-    sX: 0,
-    sY: 0
+class Cobweb extends Loot {
+    sX = 0;
+    sY = 0;
 }
 
-export { Loot, cobweb };
+export { Cobweb };

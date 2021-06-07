@@ -7,10 +7,14 @@ import * as Ennemy from "../Ennemy.js";
 
 const tileSetIndex = {
     // Terrains
-    1: Terrain.Grass,
-    2: Terrain.HorizontalGrassPath,
-    4: Terrain.Cliff,
-    5: Terrain.CliffCaveEntry,
+    1.01: Terrain.Grass,
+    1.02: Terrain.HorizontalGrassPath,
+    1.04: Terrain.Cliff,
+    1.05: Terrain.CliffCaveEntry,
+
+    2.01: Terrain.CaveGround,
+    2.02: Terrain.CaveTopWall,
+    2.04: Terrain.CaveExit,
 
     // Environments
     "O": null,
@@ -18,6 +22,7 @@ const tileSetIndex = {
     "B": Environment.Bush,
     "R": Environment.Rock,
     "S": Environment.SignLeft,
+    "W": Environment.SignRight,
 
     // Interactions
     "@1": Interaction.Interaction,
@@ -97,8 +102,7 @@ export default {
 
                         // Terrains, environments & ennemies
                         default :
-                            const temporary = new tileSetIndex[currentTile](column, row, this.tileSize);
-                            temporary.init();
+                            new tileSetIndex[currentTile](column, row, this.tileSize);
                             break;
                     }
                 }
